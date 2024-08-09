@@ -1,44 +1,49 @@
-# 직접 구현한 ArrayList와 LinkedList 성능 비교
-| Function | ArrayList | LinkedList(단일 연결 리스트) |
-|:---------|:---------:|:---------------------:|
-| 인덱스 조회 |   O(1)    |         O(N)          |
-| 검색      |   O(N)    |         O(N)          |
-| 맨앞에 추가/삭제 |   O(N)    |         O(1)          |
-| 맨뒤 추가/삭제 |   O(1)    |         O(N)          |
-| 평균 추가/삭제 |   O(N)    |         O(N)          |
+# Collection Framework
+## Collection 인터페이스
+- `java.util` 패키지의 컬렉션 프레임워크의 핵심 인터페이스 중 하나.
+- Collection 인터페이스는 List, Set, Queue 와 같은 다양한 하위 인터페이스와 함께 사용된다.
 
-## ArrayList(배열 리스트)
-- 인덱스를 통해 추가/삭제할 위치를 찾는 것은 `O(1)`로 빠르다.
-- 추가/삭제한 이후 데이터를 인덱스 한 칸씩 밀어야 하므로 `O(N)`으로 오래 걸린다.
+## List 인터페이스
+- `java.util` 패키지에 있는 컬렉션 프레임워크의 일부다.
+- List는 객체들의 순서가 있는 컬렉션을 나타낸다. 
+- List는 같은 객체의 중복 저장을 허용한다.
+- List는 동적으로 변화하는 컬렉션을 다룰 때 유연하게 사용할 수 있다.
+- List 인터페이스는 ArrayList, LinkedList와 같은 여러 구현 클래스를 갖고 있다.
 
-## LinkedList(연결 리스트)
-- 인덱스를 통해 추가/삭제할 위치를 찾는 것은 `O(N)`으로 오래 걸린다.
-- 참조값만 변경하기 때문에 추가/삭제하는데 걸리는 시간은 `O(1)`로 빠르다.
+### Java의 ArrayList
+- `java.util.ArrayList`
+- 배열을 사용해서 데이터를 관리한다.
+- 기본 CAPACITY는 10이다. (DEFAULT_CAPACITY = 10);
+  ![image](https://github.com/user-attachments/assets/4a9d0bb4-6fe9-41de-a91b-c01f8eb7774d)
+- CAPACITY를 넘어가면 현재 크기의 50% 길이만큼 증가시킨다. (oldCapacity >> 1)
+  ![image](https://github.com/user-attachments/assets/1fe59ed5-8b47-44d8-8398-a888420de8b4)
+- 메모리 고속 복사 연산을 사용한다. (System.arraycopy())
+  - 배열의 요소 이동을 시스템 레벨에서 최적화한다.
+  - 요소 한개씩 복사하는 것과 달리 이동할 요소의 범위 통째로 복사하는 것을 말한다.
+    ![image](https://github.com/user-attachments/assets/5b763d42-3ab1-408f-ac3f-0ee3b393bcb2)
 
+  
+### Java의 LinkedList
+- `java.util.LinkedList`
+- 이중 연결 리스트 구조로 첫 번째 노드와 마지막 노드 모두 참조한다.
+  - node.next는 다음 노드를, node.prev는 이전 노드를 의미.
+  - 데이터를 맨앞, 맨뒤에 추가하는 경우 모두 O(1)의 성능을 가진다.
+- 인덱스 조회 성능 최적화를 할 수 있다.
+  - 인덱스가 size/2 이하라면, 맨앞에서부터 찾고, size/2보다 크다면 역방향으로 조회한다.
 
-# 의존관계 (컴파일 타임 vs 런타임 )
-## 컴파일 타임 의존관계
-### 자바 컴파일러가 보는 의존관계
-- 클래스에 모든 의존관계. 그리고 실행되지 않은 소스코드에 정적으로 나타나는 관계.
-- list의 BatchProcessor 클래스는 MyList 인터페이스에 의존한다.
+### Java의 List 성능 비교 
+- 데이터 50000건 기준
+- 윈도우 OS로 테스트
+- 데이터를 중간에 추가할 때 ArrayList가 LinkedList보다 빠른 이유는 메모리 고속 복사를 사용해 최적화하기 때문이다. 
 
-### 화살표의 의미
-- A -> B : A가 B에 의존한다. == A가 B를 알고 있다.
-- 화살표 방향의 의미는 A에서 화살표로 가리키고 있는 B를 알고 있다는 뜻이다.
-- 자식 -> 부모 : 상속 관계에서도 자식은 부모에 의존한다 == 자식은 부모를 알고 있다. 하지만 부모는 자식을 의존하지 않는다.
+| Function    | ArrayList       | LinkedList      |
+|:------------|:----------------|:----------------|
+| 맨앞 추가/삭제 | O(N) [94ms]     | O(1) [7ms]      |
+| 평균 추가/삭제 | O(N) [48ms]     | O(N) [1161ms]   |
+| 맨뒤 추가/삭제 | O(1) [6ms]      | O(1) [3ms]      |
+| 인덱스 조회    | O(1) [1ms]      | O(N) [378ms]    |
+| 검색          | O(N) [평균 220ms] | O(N) [평균 571ms] |
 
-## 런타임 의존관계
-### 실제 프로그램이 작동할 때 보이는 의존관계
-- 생성된 인스턴스와 그것을 참조하는 의존관계. (프로그램이 실행될 때 인스턴스 간의 의존관계)
-- 런타임에 list의 BatchProcessor 인스턴스의 생성자를 통해 MyArrayList 인스턴스르 매개변수로 주입되게 되면, MyArrayList 인스턴스를 참조한다.
-  - 즉, 생성자를 통해 BatchProcessor 인스턴스에 MyArrayList(x002) 의존관계를 주입한다.
-- 이후 BatchProcessor의 logic() 메서드를 호출하면 MyArrayList 인스턴스를 사용하게 된다.
-- 이렇게 생성자를 통해 런타임 의존관계를 주입하는 것을 생성자 의존관계 주입/생성자 주입 이라고 한다.
-- BatchProcessor를 클라이언트 클래스(코드)라고 할 수 있다.
-  - 클라이언트 클래스는 컴파일 타임에 추상적인 것에 의존하고, 런타임에 의존 관계 주입을 통해 구현체를 받아 사용함으로써 재사용성 증가와 클라이언트 코드 수정 없이 확장성을 높일 수 있다.
-  - 전략 패턴(Strategy Pattern)으로 방금 코드를 구현한 것.
-    - MyList 인터페이스가 전략을 정의하는 인터페이스가 되고,
-    - MyArrayList, MyLinkedList가 전략의 구체적인 구현이 된다.
-    - 전략을 클라이언트 코드의 변경없이 손쉽게 교체할 수 있다.
-    - 즉, BatchProcessor는 MyArrayList와 MyLinkedList라는 2개의 전략을 갖고 있는데! 전략을 언제 바꾸더라도 BatchProcessor 코드에 영향이 가지 않도록 하는 패턴.
-
+### 실무에서 List
+- 대부분의 경우 ArrayList가 성능상 유리하기 때문에 주로 ArrayList를 사용한다.
+- 만약 데이터를 맨앞에 자주 추가하거나 삭제해야 한다면 LinkedList를 고려한다.
