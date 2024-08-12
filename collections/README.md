@@ -59,6 +59,7 @@
 - 해시 자료 구조를 사용해서 요소를 저장한다.
 - 순서없이 저장되고, 주요 연산이 평균적으로 O(1) 성능을 가진다.
 - 데이터의 중복 제거 시 적합하다.
+- 구현체 중 가장 많이 사용한다.
 
 ### LinkedHashSet
 - HashSet에 연결 리스트를 추가해서 요소들의 순서를 보장한다.
@@ -71,3 +72,35 @@
 - 주요 연산들은 O(log N)의 시간 복잡도를 가진다.
 - 데이터의 중복을 제거하면서 정렬할 때 유리하다.
 
+## Map 인터페이스
+### Map 
+- Map은 키-값의 쌍을 저장하는 자료구조다.
+- 키는 맵 내에서 유일해야 하고, 키를 통해 값을 빠르게 검색할 수 있다.
+- 키는 중복될 수 없지만, 값은 중복될 수 있다.
+- Map은 순서를 유지하지 않는다.
+- Collection 인터페이스와 관계가 없다.
+- 구현체 중에 `HashMap`을 가장 많이 쓴다.
+- Set과 거의 유사하고, 구현체로 HashMap, LinkedHashMap, TreeMap 등이 있다.
+
+### 키 목록 조회
+- Map의 `keySet()` 은 키 목록을 조회하고 Set을 반환한다.
+- Map의 키는 순서를 보장하지 않고, 유일한 값만 저장하기 때문에 Java의 Set과 같은 자료구조로 되어있다.
+- Java의 HashSet의 구현은 HashMap을 가져와서 value를 비워두고 key만을 사용하도록 되어 있다.
+
+### 키와 값 목록 조회
+- Map의 `Entry` 는 Map의 키와 값을 하나로 묶어서 저장한다.
+- Entry는 키-값의 쌍으로 이뤄진 간단한 객체다.
+- 하나의 Map에 여러 Entry가 저장될 수 있다.
+- Entry는 Map 내부에 있는 인터페이스이다.
+
+### 값 목록 조회
+- Map의 `values()'는 값 목록을 조회하고, Collection을 반환한다.
+- Map의 값은 중복을 허용한다. => Set 반환 불가
+- Map의 값은 입력 순서를 보장하지 않는다 => List 반환 불가
+- 값의 모음이라는 의미의 상위 인터페이스 Collection 반환 가능
+
+## Queue 인터페이스
+- Queue 인터페이스는 `List`, `Set` 과 같이 `Collection`의 자식이다.
+- 대표적인 구현체는 `ArrayDeque`, `LinkedList`가 있다.
+  - LinkedList 는 `Deque` 와 `List` 인터페이스를 모두 구현한다.
+    ![image](https://github.com/user-attachments/assets/2c724e2f-5e77-4911-8b76-acc4e7ffc5b3)
