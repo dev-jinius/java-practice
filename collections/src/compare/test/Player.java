@@ -26,10 +26,14 @@ public class Player {
     public void selectCards(Deck deck) {
         for (int i = 0; i < 5; i++) {
             Card card = deck.removeCard(deck);
-            cardList.add(card);
-            score += card.getNumber();
+            this.cardList.add(card);
+            this.score += card.getNumber();
         }
-        cardList.sort(null);
-        System.out.println(this.name + "의 카드: " + cardList + ", 합계: " + score);
+        showCards();
+    }
+
+    private void showCards() {
+        this.cardList.sort(null);
+        System.out.println(this.name + "의 카드: " + this.cardList + ", 합계: " + this.score);
     }
 }

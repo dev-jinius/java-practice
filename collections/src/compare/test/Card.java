@@ -28,12 +28,15 @@ public class Card implements Comparable<Card> {
 
     @Override
     public int compareTo(Card o) {
-        if (this.number < o.number) return -1;
-        if (this.number == o.number) {
-            return shapes.indexOf(this.shape) < shapes.indexOf(o.shape) ? -1 :
-                    ((shapes.indexOf(this.shape) == shapes.indexOf(o.shape)) ? 0 : 1);
-        }
-        return 1;
+        if (this.number != o.number)
+            return Integer.compare(this.number, o.number);
+        return Integer.compare(shapes.indexOf(this.shape), shapes.indexOf(o.shape));
+//        if (this.number < o.number) return -1;
+//        if (this.number == o.number) {
+//            return shapes.indexOf(this.shape) < shapes.indexOf(o.shape) ? -1 :
+//                    ((shapes.indexOf(this.shape) == shapes.indexOf(o.shape)) ? 0 : 1);
+//        }
+//        return 1;
     }
 
     @Override
